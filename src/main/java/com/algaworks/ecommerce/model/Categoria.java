@@ -7,19 +7,19 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.List;
 
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@Setter
 @Getter
+@Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "categoria")
 public class Categoria {
 
     @EqualsAndHashCode.Include
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
-//    @SequenceGenerator(name = "seq", sequenceName = "sequencia_chave_primaria")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    private String nome;
 
     @ManyToOne
     @JoinColumn(name = "categoria_pai_id")
@@ -30,8 +30,4 @@ public class Categoria {
 
     @ManyToMany(mappedBy = "categorias")
     private List<Produto> produtos;
-
-    private String nome;
-
-
 }

@@ -6,26 +6,24 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@Setter
 @Getter
+@Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "pagamento_boleto")
 public class PagamentoBoleto {
 
     @EqualsAndHashCode.Include
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "pedido_id")
-    private Integer PedidoId;
-
-    @Column(name = "codigo_barras")
-    private String codigoBarras;
+    private Integer pedidoId;
 
     @Enumerated(EnumType.STRING)
     private StatusPagamento status;
 
-
+    @Column(name = "codigo_barras")
+    private String codigoBarras;
 }

@@ -6,19 +6,21 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@Setter
 @Getter
+@Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "estoque")
 public class Estoque {
 
     @EqualsAndHashCode.Include
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(name = "produto_id")
-    private Integer produtoId;
-    private Integer quantidade;
 
+    @OneToOne(optional = false)
+    @JoinColumn(name = "produto_id")
+    private Produto produto;
+
+    private Integer quantidade;
 }

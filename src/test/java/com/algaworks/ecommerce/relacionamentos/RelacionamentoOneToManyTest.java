@@ -9,12 +9,14 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class RelacionamentoOneToManyTest extends EntityManagerTest {
+
     @Test
-    public void verificarRelacionemento(){
+    public void verificarRelacionamento() {
         Cliente cliente = entityManager.find(Cliente.class, 1);
+
         Pedido pedido = new Pedido();
         pedido.setStatus(StatusPedido.AGUARDANDO);
-        pedido.setDataPedido(LocalDateTime.now());
+        pedido.setDataCriacao(LocalDateTime.now());
         pedido.setTotal(BigDecimal.TEN);
 
         pedido.setCliente(cliente);
@@ -27,23 +29,22 @@ public class RelacionamentoOneToManyTest extends EntityManagerTest {
 
         Cliente clienteVerificacao = entityManager.find(Cliente.class, cliente.getId());
         Assert.assertFalse(clienteVerificacao.getPedidos().isEmpty());
-
     }
 
     @Test
-    public void verificarRelaciomentoPedido(){
+    public void verificarRelacionamentoPedido() {
         Cliente cliente = entityManager.find(Cliente.class, 1);
         Produto produto = entityManager.find(Produto.class, 1);
 
         Pedido pedido = new Pedido();
         pedido.setStatus(StatusPedido.AGUARDANDO);
-        pedido.setDataPedido(LocalDateTime.now());
-        pedido.setTotal(new BigDecimal(2600));
+        pedido.setDataCriacao(LocalDateTime.now());
+        pedido.setTotal(BigDecimal.TEN);
         pedido.setCliente(cliente);
 
-        ItemPedido itemPedido =  new ItemPedido();
+        ItemPedido itemPedido = new ItemPedido();
         itemPedido.setPrecoProduto(produto.getPreco());
-        itemPedido.setQuantidade(3);
+        itemPedido.setQuantidade(1);
         itemPedido.setPedido(pedido);
         itemPedido.setProduto(produto);
 
@@ -54,11 +55,7 @@ public class RelacionamentoOneToManyTest extends EntityManagerTest {
 
         entityManager.clear();
 
-        Pedido pedidoVerificado = entityManager.find(Pedido.class, pedido.getId());
-        Assert.assertFalse(pedidoVerificado.getItens().isEmpty());
-
+        Pedido pedidoVerificacao = entityManager.find(Pedido.class, pedido.getId());
+        Assert.assertFalse(pedidoVerificacao.getItens().isEmpty());
     }
-
-
-
 }

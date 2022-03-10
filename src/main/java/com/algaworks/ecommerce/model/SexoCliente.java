@@ -1,6 +1,7 @@
 package com.algaworks.ecommerce.model;
 
-public enum  SexoCliente {
-    MASCULINO,
-    FEMININO
+public enum SexoCliente {
+
+    FEMININO,
+    MASCULINO
 }

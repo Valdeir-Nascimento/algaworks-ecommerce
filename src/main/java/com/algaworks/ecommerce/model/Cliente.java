@@ -7,17 +7,18 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.List;
 
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Getter
 @Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "cliente")
 public class Cliente {
 
     @EqualsAndHashCode.Include
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     private String nome;
 
     @Enumerated(EnumType.STRING)
@@ -25,5 +26,4 @@ public class Cliente {
 
     @OneToMany(mappedBy = "cliente")
     private List<Pedido> pedidos;
-
 }

@@ -9,14 +9,16 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class AutoRelacionamentoTest extends EntityManagerTest {
+
     @Test
-    public void verificarRelacionemento(){
+    public void verificarRelacionamento() {
         Categoria categoriaPai = new Categoria();
-        categoriaPai.setNome("Eletronicos");
+        categoriaPai.setNome("Eletrônicos");
 
         Categoria categoria = new Categoria();
         categoria.setNome("Celulares");
         categoria.setCategoriaPai(categoriaPai);
+
 
         entityManager.getTransaction().begin();
         entityManager.persist(categoriaPai);
@@ -30,6 +32,5 @@ public class AutoRelacionamentoTest extends EntityManagerTest {
 
         Categoria categoriaPaiVerificacao = entityManager.find(Categoria.class, categoriaPai.getId());
         Assert.assertFalse(categoriaPaiVerificacao.getCategorias().isEmpty());
-
     }
 }

@@ -8,7 +8,7 @@ import org.junit.Test;
 public class EstrategiaChavePrimariaTest extends EntityManagerTest {
 
     @Test
-    public void testarEstrategiaChave(){
+    public void testarEstrategiaChave() {
         Categoria categoria = new Categoria();
         categoria.setNome("Eletrônicos");
 
@@ -21,5 +21,4 @@ public class EstrategiaChavePrimariaTest extends EntityManagerTest {
         Categoria categoriaVerificacao = entityManager.find(Categoria.class, categoria.getId());
         Assert.assertNotNull(categoriaVerificacao);
     }
-
 }
