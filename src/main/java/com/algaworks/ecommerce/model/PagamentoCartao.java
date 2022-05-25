@@ -8,23 +8,17 @@ import javax.persistence.*;
 
 @Getter
 @Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "pagamento_cartao")
-public class PagamentoCartao {
+public class PagamentoCartao extends EntidadeBaseInteger {
 
-    @Id
-    @EqualsAndHashCode.Include
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+	@MapsId
+	@OneToOne(optional = false)
+	@JoinColumn(name = "pedido_id")
+	private Pedido pedido;
 
-    @MapsId
-    @OneToOne(optional = false)
-    @JoinColumn(name = "pedido_id")
-    private Pedido pedido;
+	@Enumerated(EnumType.STRING)
+	private StatusPagamento status;
 
-    @Enumerated(EnumType.STRING)
-    private StatusPagamento status;
-
-    private String numero;
+	private String numero;
 }
