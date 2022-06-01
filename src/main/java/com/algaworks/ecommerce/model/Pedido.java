@@ -41,11 +41,11 @@ public class Pedido extends EntidadeBaseInteger {
 	@Enumerated(EnumType.STRING)
 	private StatusPedido status;
 
-	@OneToOne(mappedBy = "pedido")
-	private PagamentoCartao pagamento;
-
 	@Embedded
 	private EnderecoEntregaPedido enderecoEntrega;
+
+	@OneToOne(mappedBy = "pedido")
+	private Pagamento pagamento;
 
 	public boolean isPago() {
 		return StatusPedido.PAGO.equals(status);
