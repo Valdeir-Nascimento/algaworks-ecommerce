@@ -1,6 +1,5 @@
 package com.algaworks.ecommerce.model;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,18 +10,19 @@ import java.util.List;
 @Setter
 
 @Entity
-@Table(name = "categoria")
+@Table(name = "categoria",
+		uniqueConstraints = {@UniqueConstraint(name = "unq_nome", columnNames = {"nome"})})
 public class Categoria extends EntidadeBaseInteger {
 
-    private String nome;
+	private String nome;
 
-    @ManyToOne
-    @JoinColumn(name = "categoria_pai_id")
-    private Categoria categoriaPai;
+	@ManyToOne
+	@JoinColumn(name = "categoria_pai_id")
+	private Categoria categoriaPai;
 
-    @OneToMany(mappedBy = "categoriaPai")
-    private List<Categoria> categorias;
+	@OneToMany(mappedBy = "categoriaPai")
+	private List<Categoria> categorias;
 
-    @ManyToMany(mappedBy = "categorias")
-    private List<Produto> produtos;
+	@ManyToMany(mappedBy = "categorias")
+	private List<Produto> produtos;
 }
