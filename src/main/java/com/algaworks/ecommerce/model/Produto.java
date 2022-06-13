@@ -3,6 +3,7 @@ package com.algaworks.ecommerce.model;
 import com.algaworks.ecommerce.listener.GenericoListener;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -18,14 +19,16 @@ import java.util.List;
 		indexes = { @Index(name = "idx_nome", columnList = "nome") })
 public class Produto extends EntidadeBaseInteger {
 
-	@Column(name = "data_criacao", updatable = false)
+	@Column(name = "data_criacao", updatable = false, nullable = false)
 	private LocalDateTime dataCriacao;
 
 	@Column(name = "data_ultima_atualizacao", insertable = false)
 	private LocalDateTime dataUltimaAtualizacao;
 
+	@Column(length = 100, nullable = false)
 	private String nome;
 
+	@Column(columnDefinition = "varchar(255) not null default 'descricao'")
 	private String descricao;
 
 	private BigDecimal preco;
@@ -40,9 +43,8 @@ public class Produto extends EntidadeBaseInteger {
 	private Estoque estoque;
 
 	@ElementCollection
-	@CollectionTable(name = "produto_tag",
-			joinColumns = @JoinColumn(name = "produto_id"))
-	@Column(name = "tag")
+	@CollectionTable(name = "produto_tag", joinColumns = @JoinColumn(name = "produto_id"))
+	@Column(name = "tag", length = 50, nullable = false)
 	private List<String> tags;
 
 	@ElementCollection

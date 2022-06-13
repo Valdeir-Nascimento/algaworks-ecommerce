@@ -26,6 +26,6 @@ public class NotaFiscal extends EntidadeBaseInteger {
 
 	private String xml;
 
-	@Column(name = "data_emissao")
+	@Column(name = "data_emissao", nullable = false)
 	private Date dataEmissao;
 }

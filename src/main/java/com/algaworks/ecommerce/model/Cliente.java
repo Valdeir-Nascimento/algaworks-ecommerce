@@ -19,13 +19,14 @@ import java.util.Map;
 )
 public class Cliente extends EntidadeBaseInteger {
 
-
+	@Column(length = 14, nullable = false)
 	private String nome;
 
-	@Column(table = "cliente_detalhe")
+	@Column(table = "cliente_detalhe", length = 30, nullable = false)
 	@Enumerated(EnumType.STRING)
 	private SexoCliente sexo;
 
+	@Column(length = 100, nullable = false)
 	private String cpf;
 
 	@Column(name = "data_nascimento", table = "cliente_detalhe")
