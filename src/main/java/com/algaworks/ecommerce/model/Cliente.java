@@ -19,7 +19,7 @@ import java.util.Map;
 )
 public class Cliente extends EntidadeBaseInteger {
 
-	@Column(length = 14, nullable = false)
+	@Column(length = 150, nullable = false)
 	private String nome;
 
 	@Column(table = "cliente_detalhe", length = 30, nullable = false)

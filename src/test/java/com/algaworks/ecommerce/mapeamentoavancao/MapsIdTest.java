@@ -2,13 +2,11 @@ package com.algaworks.ecommerce.mapeamentoavancao;
 
 import com.algaworks.ecommerce.EntityManagerTest;
 import com.algaworks.ecommerce.model.*;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
 import java.util.Date;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 public class MapsIdTest extends EntityManagerTest {
 
@@ -27,10 +25,9 @@ public class MapsIdTest extends EntityManagerTest {
 
         entityManager.clear();
 
-        NotaFiscal notaFiscalVerificacao = entityManager.find(NotaFiscal.class, notaFiscal.getId());
-        assertNotNull(notaFiscalVerificacao);
-        assertEquals(pedido.getId(), notaFiscalVerificacao.getId());
-
+        NotaFiscal notaFiscalVarificacao = entityManager.find(NotaFiscal.class, notaFiscal.getId());
+        Assert.assertNotNull(notaFiscalVarificacao);
+        Assert.assertEquals(pedido.getId(), notaFiscalVarificacao.getId());
     }
 
     @Test
@@ -58,8 +55,9 @@ public class MapsIdTest extends EntityManagerTest {
 
         entityManager.clear();
 
-        ItemPedido itemPedidoVerificacao = entityManager.find(ItemPedido.class, new ItemPedidoId(pedido.getId(), produto.getId()));
-        assertNotNull(itemPedidoVerificacao);
+        ItemPedido itemPedidoVerificacao = entityManager.find(
+                ItemPedido.class, new ItemPedidoId(pedido.getId(), produto.getId()));
+        Assert.assertNotNull(itemPedidoVerificacao);
     }
 
 }

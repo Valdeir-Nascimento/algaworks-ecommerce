@@ -1,22 +1,19 @@
 package com.algaworks.ecommerce.mapeamentoavancao;
 
 import com.algaworks.ecommerce.EntityManagerTest;
-import com.algaworks.ecommerce.model.Cliente;
-import com.algaworks.ecommerce.model.PagamentoCartao;
-import com.algaworks.ecommerce.model.Pedido;
-import com.algaworks.ecommerce.model.StatusPagamento;
+import com.algaworks.ecommerce.model.*;
+import org.junit.Assert;
 import org.junit.Test;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+import java.util.List;
 
 public class HerancaTest extends EntityManagerTest {
-
 	@Test
 	public void salvarCliente() {
-
 		Cliente cliente = new Cliente();
-		cliente.setNome("Fernanda Moraes");
+		cliente.setNome("Fernanda Morais");
+		cliente.setSexo(SexoCliente.FEMININO);
+		cliente.setCpf("333");
 
 		entityManager.getTransaction().begin();
 		entityManager.persist(cliente);
@@ -24,18 +21,17 @@ public class HerancaTest extends EntityManagerTest {
 
 		entityManager.clear();
 
-		Cliente verificado = entityManager.find(Cliente.class, cliente.getId());
-		assertNotNull(verificado.getId());
-
+		Cliente clienteVerificacao = entityManager.find(Cliente.class, cliente.getId());
+		Assert.assertNotNull(clienteVerificacao.getId());
 	}
 
 	@Test
 	public void buscarPagamentos() {
-		var pagamentos = entityManager
+		List<Pagamento> pagamentos = entityManager
 				.createQuery("select p from Pagamento p")
 				.getResultList();
 
-		assertFalse(pagamentos.isEmpty());
+		Assert.assertFalse(pagamentos.isEmpty());
 	}
 
 	@Test
@@ -53,8 +49,8 @@ public class HerancaTest extends EntityManagerTest {
 
 		entityManager.clear();
 
-		Pedido verificado = entityManager.find(Pedido.class, pedido.getId());
-		assertNotNull(verificado.getPagamento());
+		Pedido pedidoVerificacao = entityManager.find(Pedido.class, pedido.getId());
+		Assert.assertNotNull(pedidoVerificacao.getPagamento());
 	}
 
 }

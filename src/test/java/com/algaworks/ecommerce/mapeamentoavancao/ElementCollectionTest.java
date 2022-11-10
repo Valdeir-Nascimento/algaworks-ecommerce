@@ -15,46 +15,51 @@ import static org.junit.Assert.assertFalse;
 
 public class ElementCollectionTest extends EntityManagerTest {
 
-	@Test
-	public void aplicarTags() {
-		entityManager.getTransaction().begin();
-		Produto produto = entityManager.find(Produto.class, 1);
-		produto.setTags(Arrays.asList("ebook", "livro-digital"));
-		entityManager.getTransaction().commit();
 
-		entityManager.clear();
+    @Test
+    public void aplicarTags() {
+        entityManager.getTransaction().begin();
 
-		Produto produtoVerificado = entityManager.find(Produto.class, produto.getId());
-		assertFalse(produtoVerificado.getTags().isEmpty());
+        Produto produto = entityManager.find(Produto.class, 1);
+        produto.setTags(Arrays.asList("ebook", "livro-digital"));
 
-	}
+        entityManager.getTransaction().commit();
 
-	@Test
-	public void aplicarAtributos() {
-		entityManager.getTransaction().begin();
-		Produto produto = entityManager.find(Produto.class, 1);
-		produto.setAtributos(Arrays.asList(new Atributo("tela", "320x600")));
-		entityManager.getTransaction().commit();
+        entityManager.clear();
 
-		entityManager.clear();
+        Produto produtoVerificacao = entityManager.find(Produto.class, produto.getId());
+        Assert.assertFalse(produtoVerificacao.getTags().isEmpty());
+    }
 
-		Produto produtoVerificado = entityManager.find(Produto.class, produto.getId());
-		assertFalse(produtoVerificado.getAtributos().isEmpty());
+    @Test
+    public void aplicarAtributos() {
+        entityManager.getTransaction().begin();
 
-	}
+        Produto produto = entityManager.find(Produto.class, 1);
+        produto.setAtributos(Arrays.asList(new Atributo("tela", "320x600")));
 
-	@Test
-	public void aplicarContato() {
-		entityManager.getTransaction().begin();
-		Cliente cliente = entityManager.find(Cliente.class, 1);
-		cliente.setContatos(Collections.singletonMap("email", "fernando@email.com"));
-		entityManager.getTransaction().commit();
+        entityManager.getTransaction().commit();
 
-		entityManager.clear();
+        entityManager.clear();
 
-		Cliente clienteVerificado = entityManager.find(Cliente.class, cliente.getId());
-		assertEquals("fernando@email.com", clienteVerificado.getContatos().get("email") );
+        Produto produtoVerificacao = entityManager.find(Produto.class, produto.getId());
+        Assert.assertFalse(produtoVerificacao.getAtributos().isEmpty());
+    }
 
-	}
+    @Test
+    public void aplicarContato() {
+        entityManager.getTransaction().begin();
+
+        Cliente cliente = entityManager.find(Cliente.class, 1);
+        cliente.setContatos(Collections.singletonMap("email", "fernando@email.com"));
+
+        entityManager.getTransaction().commit();
+
+        entityManager.clear();
+
+        Cliente clienteVerificacao = entityManager.find(Cliente.class, cliente.getId());
+        Assert.assertEquals(
+                "fernando@email.com", clienteVerificacao.getContatos().get("email"));
+    }
 
 }

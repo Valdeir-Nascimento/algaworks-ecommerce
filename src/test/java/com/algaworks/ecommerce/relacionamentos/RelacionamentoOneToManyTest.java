@@ -9,7 +9,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class RelacionamentoOneToManyTest extends EntityManagerTest {
-
     @Test
     public void verificarRelacionamento() {
         Cliente cliente = entityManager.find(Cliente.class, 1);
@@ -18,7 +17,6 @@ public class RelacionamentoOneToManyTest extends EntityManagerTest {
         pedido.setStatus(StatusPedido.AGUARDANDO);
         pedido.setDataCriacao(LocalDateTime.now());
         pedido.setTotal(BigDecimal.TEN);
-
         pedido.setCliente(cliente);
 
         entityManager.getTransaction().begin();
