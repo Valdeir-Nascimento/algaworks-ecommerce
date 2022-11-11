@@ -13,13 +13,12 @@ import javax.persistence.*;
 @Table(name = "pagamento")
 public abstract class Pagamento extends EntidadeBaseInteger {
 
-
-	@Enumerated(EnumType.STRING)
-	@Column(length = 30, nullable = false)
-	private StatusPagamento status;
-
 	@MapsId
 	@OneToOne(optional = false)
 	@JoinColumn(name = "pedido_id", nullable = false, foreignKey = @ForeignKey(name = "fk_pagamento_pedido"))
 	private Pedido pedido;
+
+	@Enumerated(EnumType.STRING)
+	@Column(length = 30, nullable = false)
+	private StatusPagamento status;
 }

@@ -9,9 +9,9 @@ import java.math.BigDecimal;
 
 @Getter
 @Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "item_pedido")
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class ItemPedido {
 
     @EmbeddedId
@@ -33,3 +33,4 @@ public class ItemPedido {
     @JoinColumn(name = "produto_id", nullable = false, foreignKey = @ForeignKey(name = "fk_item_pedido_produto"))
     private Produto produto;
 }
+

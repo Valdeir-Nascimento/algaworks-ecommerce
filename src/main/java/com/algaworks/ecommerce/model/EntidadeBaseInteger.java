@@ -8,8 +8,8 @@ import javax.persistence.*;
 
 @Getter
 @Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @MappedSuperclass
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class EntidadeBaseInteger {
 
 	@Id
