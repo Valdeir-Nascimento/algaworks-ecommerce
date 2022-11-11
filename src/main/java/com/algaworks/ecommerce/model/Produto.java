@@ -43,7 +43,7 @@ public class Produto extends EntidadeBaseInteger {
 	private Estoque estoque;
 
 	@ElementCollection
-	@CollectionTable(name = "produto_tag", joinColumns = @JoinColumn(name = "produto_id"))
+	@CollectionTable(name = "produto_tag", joinColumns = @JoinColumn(name = "produto_id", foreignKey = @ForeignKey(name = "fk_produto_tag")))
 	@Column(name = "tag", length = 50, nullable = false)
 	private List<String> tags;
 
