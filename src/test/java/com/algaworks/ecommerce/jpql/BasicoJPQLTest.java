@@ -65,4 +65,12 @@ public class BasicoJPQLTest extends EntityManagerTest {
         produtos.forEach(produto -> System.out.println(produto.getNome()));
     }
 
+    @Test
+    public void fazerJoin() {
+        String jpql = "select p, pag from Pedido p join p.pagamento pag";
+        TypedQuery<Object[]> typedQuery = entityManager.createQuery(jpql, Object[].class);
+        List<Object[]> pedidos = typedQuery.getResultList();
+        assertEquals(1 , pedidos.size());
+    }
+
 }
