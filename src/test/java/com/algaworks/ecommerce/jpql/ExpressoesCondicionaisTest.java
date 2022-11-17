@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import javax.persistence.TypedQuery;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.Assert.assertFalse;
@@ -47,5 +48,24 @@ public class ExpressoesCondicionaisTest extends EntityManagerTest {
         assertFalse(resposta.isEmpty());
     }
 
+    @Test
+    public void usarBetween() {
+        String jpql = "select p from Produto p where p.preco between :precoInicial and :precoFinal"; //Maior ou igual and menor ou igual
+        TypedQuery<Object[]> typedQuery = entityManager.createQuery(jpql, Object[].class);
+        typedQuery.setParameter("precoInicial", new BigDecimal(199));
+        typedQuery.setParameter("precoFinal", new BigDecimal(1400));
+        List<Object[]> resposta = typedQuery.getResultList();
+        assertFalse(resposta.isEmpty());
+    }
+
+    @Test
+    public void usarBetweenComDatas() {
+        String jpql = "select p from Pedido p where p.dataCriacao between :dataInicial and :dataFinal"; //Maior ou igual and menor ou igual
+        TypedQuery<Object[]> typedQuery = entityManager.createQuery(jpql, Object[].class);
+        typedQuery.setParameter("dataInicial", LocalDateTime.now().minusDays(2));
+        typedQuery.setParameter("dataFinal", LocalDateTime.now());
+        List<Object[]> resposta = typedQuery.getResultList();
+        assertFalse(resposta.isEmpty());
+    }
 
 }
