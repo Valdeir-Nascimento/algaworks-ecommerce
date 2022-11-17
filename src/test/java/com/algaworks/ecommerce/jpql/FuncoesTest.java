@@ -38,4 +38,13 @@ public class FuncoesTest extends EntityManagerTest {
         resposta.forEach(i -> System.out.println(i[0] + " | " + i[1] + " | " + i[2]));
     }
 
+    @Test
+    public void aplicarFuncaoColecao() {
+        String jpql = "select size(p.itens) from Pedido p where size(p.itens) > 1";
+        TypedQuery<Integer> typedQuery = entityManager.createQuery(jpql, Integer.class);
+        List<Integer> resposta = typedQuery.getResultList();
+        assertFalse(resposta.isEmpty());
+        resposta.forEach(System.out::println);
+    }
+
 }
