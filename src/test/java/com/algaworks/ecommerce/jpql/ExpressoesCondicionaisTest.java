@@ -19,4 +19,20 @@ public class ExpressoesCondicionaisTest extends EntityManagerTest {
         assertFalse(resposta.isEmpty());
     }
 
+    @Test
+    public void usarIsNull() {
+        String jpql = "select p from Produto p where p.foto is null ";
+        TypedQuery<Object[]> typedQuery = entityManager.createQuery(jpql, Object[].class);
+        List<Object[]> resposta = typedQuery.getResultList();
+        assertFalse(resposta.isEmpty());
+    }
+
+    @Test
+    public void usarIsEmpty() {
+        String jpql = "select p from Produto p where p.categorias is empty";
+        TypedQuery<Object[]> typedQuery = entityManager.createQuery(jpql, Object[].class);
+        List<Object[]> resposta = typedQuery.getResultList();
+        assertFalse(resposta.isEmpty());
+    }
+
 }
