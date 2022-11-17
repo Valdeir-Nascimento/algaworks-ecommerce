@@ -4,6 +4,7 @@ import com.algaworks.ecommerce.EntityManagerTest;
 import org.junit.Test;
 
 import javax.persistence.TypedQuery;
+import java.math.BigDecimal;
 import java.util.List;
 
 import static org.junit.Assert.assertFalse;
@@ -34,5 +35,17 @@ public class ExpressoesCondicionaisTest extends EntityManagerTest {
         List<Object[]> resposta = typedQuery.getResultList();
         assertFalse(resposta.isEmpty());
     }
+
+
+    @Test
+    public void usarMaiorMenor() {
+        String jpql = "select p from Produto p where p.preco >= :precoInicial and p.preco <= :precoFinal";
+        TypedQuery<Object[]> typedQuery = entityManager.createQuery(jpql, Object[].class);
+        typedQuery.setParameter("precoInicial", new BigDecimal(400));
+        typedQuery.setParameter("precoFinal", new BigDecimal(1500));
+        List<Object[]> resposta = typedQuery.getResultList();
+        assertFalse(resposta.isEmpty());
+    }
+
 
 }
