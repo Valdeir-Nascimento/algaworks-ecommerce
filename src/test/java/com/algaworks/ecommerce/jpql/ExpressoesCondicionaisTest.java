@@ -68,4 +68,13 @@ public class ExpressoesCondicionaisTest extends EntityManagerTest {
         assertFalse(resposta.isEmpty());
     }
 
+    @Test
+    public void usarBetweenDiferente() {
+        String jpql = "select p from Produto p where p.preco <> 100";
+        TypedQuery<Object[]> typedQuery = entityManager.createQuery(jpql, Object[].class);
+        List<Object[]> resposta = typedQuery.getResultList();
+        assertFalse(resposta.isEmpty());
+    }
+
+
 }
