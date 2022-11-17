@@ -57,4 +57,14 @@ public class FuncoesTest extends EntityManagerTest {
         resposta.forEach(System.out::println);
     }
 
+    @Test
+    public void aplicarFuncaoAgregacao() {
+        // avg, count, min, max, sum
+        String jpql = "select avg(p.total) from Pedido p";
+        TypedQuery<Number> typedQuery = entityManager.createQuery(jpql, Number.class);
+        List<Number> resposta = typedQuery.getResultList();
+        assertFalse(resposta.isEmpty());
+        resposta.forEach(System.out::println);
+    }
+
 }
