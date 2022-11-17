@@ -65,4 +65,12 @@ public class BasicoJPQLTest extends EntityManagerTest {
         produtos.forEach(produto -> System.out.println(produto.getNome()));
     }
 
+    @Test
+    public void ordenarResultados() {
+        String jpql = "select c from Cliente c order by c.nome desc";
+        TypedQuery<Cliente> typedQuery = entityManager.createQuery(jpql, Cliente.class);
+        List<Cliente> resposta = typedQuery.getResultList();
+        assertFalse(resposta.isEmpty());
+    }
+
 }
