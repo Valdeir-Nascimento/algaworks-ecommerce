@@ -1,6 +1,7 @@
 package com.algaworks.ecommerce.jpql;
 
 import com.algaworks.ecommerce.EntityManagerTest;
+import com.algaworks.ecommerce.model.Pedido;
 import org.junit.Test;
 
 import javax.persistence.TypedQuery;
@@ -43,6 +44,15 @@ public class FuncoesTest extends EntityManagerTest {
         String jpql = "select size(p.itens) from Pedido p where size(p.itens) > 1";
         TypedQuery<Integer> typedQuery = entityManager.createQuery(jpql, Integer.class);
         List<Integer> resposta = typedQuery.getResultList();
+        assertFalse(resposta.isEmpty());
+        resposta.forEach(System.out::println);
+    }
+
+    @Test
+    public void aplicarFuncaoNativa() {
+        String jpql = "select p from Pedido p where function('acima_media_faturamento', p.total) = 1";
+        TypedQuery<Pedido> typedQuery = entityManager.createQuery(jpql, Pedido.class);
+        List<Pedido> resposta = typedQuery.getResultList();
         assertFalse(resposta.isEmpty());
         resposta.forEach(System.out::println);
     }
