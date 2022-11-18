@@ -13,6 +13,21 @@ import static org.junit.Assert.assertFalse;
 public class ExpressoesCondicionaisTest extends EntityManagerTest {
 
     @Test
+    public void usarExpressaoCase() {
+        String jpql = "select p.id, " +
+                " case type(p.pagamento)" +
+                "       when PagamentoBoleto then 'Pago com boleto' " +
+                "       when PagamentoCartao then 'Pago com cartão' " +
+                "       else 'Não pago ainda.' " +
+                " end "  +
+                " from Pedido p";
+        TypedQuery<Object[]> typedQuery = entityManager.createQuery(jpql, Object[].class);
+        List<Object[]> resposta = typedQuery.getResultList();
+        assertFalse(resposta.isEmpty());
+        resposta.forEach(item -> System.out.println(item[0] + ", " + item[1]));
+    }
+
+    @Test
     public void usarExpressaoCondicionalLike() {
         String jpql = "select c from Cliente c where c.nome like concat('%', :nome, '%') ";
         TypedQuery<Object[]> typedQuery = entityManager.createQuery(jpql, Object[].class);
