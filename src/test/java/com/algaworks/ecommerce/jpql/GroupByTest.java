@@ -30,11 +30,8 @@ public class GroupByTest extends EntityManagerTest {
                 " group by c.id";
 
         TypedQuery<Object[]> typedQuery = entityManager.createQuery(jpql, Object[].class);
-
         List<Object[]> lista = typedQuery.getResultList();
-
         assertFalse(lista.isEmpty());
-
         lista.forEach(arr -> System.out.println(arr[0] + ", " + arr[1]));
     }
 
@@ -66,13 +63,9 @@ public class GroupByTest extends EntityManagerTest {
                 " group by year(p.dataCriacao), month(p.dataCriacao), day(p.dataCriacao), c.id " +
                 " order by p.dataCriacao, c.nome ";
 
-
         TypedQuery<Object[]> typedQuery = entityManager.createQuery(jpql, Object[].class);
-
         List<Object[]> lista = typedQuery.getResultList();
-
         assertFalse(lista.isEmpty());
-
         lista.forEach(arr -> System.out.println(arr[0] + ", " + arr[1]));
     }
 }
