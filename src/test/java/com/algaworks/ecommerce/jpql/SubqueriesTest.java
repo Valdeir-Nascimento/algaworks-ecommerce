@@ -14,6 +14,30 @@ import static org.junit.Assert.assertFalse;
 public class SubqueriesTest extends EntityManagerTest {
 
     @Test
+    public void pesquisarComINExercicio() {
+        String jpql = "select p from Pedido p where p.id in " +
+                " (select ped.id from ItemPedido ip " +
+                " join ip.pedido ped " +
+                " join ip.produto pro " +
+                " join pro.categorias c " +
+                " where c.id = 2)";
+        TypedQuery<Pedido> typedQuery = entityManager.createQuery(jpql, Pedido.class);
+        List<Pedido> resposta = typedQuery.getResultList();
+        assertFalse(resposta.isEmpty());
+        resposta.forEach(item -> System.out.println("ID: " + item.getId()));
+    }
+
+    @Test
+    public void pesquisarComExists() {
+        String jpql = "select p from Produto p where exists " +
+                " (select 1 from ItemPedido ip join ip.produto pro where pro = p)";
+        TypedQuery<Produto> typedQuery = entityManager.createQuery(jpql, Produto.class);
+        List<Produto> resposta = typedQuery.getResultList();
+        assertFalse(resposta.isEmpty());
+        resposta.forEach(item -> System.out.println("ID: " + item.getId()));
+    }
+
+    @Test
     public void pesquisarComIN() {
         String jpql = "select p from Pedido p where p.id " +
                 " in (select ped.id from ItemPedido item " +
