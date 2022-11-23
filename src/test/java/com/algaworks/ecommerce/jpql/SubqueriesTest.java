@@ -14,6 +14,17 @@ import static org.junit.Assert.assertFalse;
 public class SubqueriesTest extends EntityManagerTest {
 
     @Test
+    public void perquisarComExistsExercicio() {
+        String jpql = "select p from Produto p " +
+                " where exists " +
+                " (select 1 from ItemPedido where produto = p and precoProduto <> p.preco)";
+        TypedQuery<Produto> typedQuery = entityManager.createQuery(jpql, Produto.class);
+        List<Produto> lista = typedQuery.getResultList();
+        assertFalse(lista.isEmpty());
+        lista.forEach(item -> System.out.println("ID: " + item.getId()));
+    }
+
+    @Test
     public void pesquisarComSubqueryExericio() {
         String jpql = "select c from Cliente c where " +
                 " (select count(cliente) from Pedido where cliente = c) >= 2";
