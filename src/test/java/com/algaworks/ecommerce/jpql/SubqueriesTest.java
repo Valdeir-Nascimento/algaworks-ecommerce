@@ -14,6 +14,19 @@ import static org.junit.Assert.assertFalse;
 public class SubqueriesTest extends EntityManagerTest {
 
     @Test
+    public void perquisarComAll() {
+//        Todos os produtos que sempre foram vendidos pelo preço atual
+//        String jpql = "select p from Produto p where p.preco = ALL (select precoProduto from ItemPedido where produto = p)";
+
+//        Todos os produtos que não foram vendidos mais depois que encerraram
+        String jpql = "select p from Produto p where p.preco > ALL (select precoProduto from ItemPedido where produto = p) ";
+        TypedQuery<Produto> typedQuery = entityManager.createQuery(jpql, Produto.class);
+        List<Produto> lista = typedQuery.getResultList();
+        assertFalse(lista.isEmpty());
+        lista.forEach(item -> System.out.println("ID: " + item.getId()));
+    }
+
+    @Test
     public void perquisarComExistsExercicio() {
         String jpql = "select p from Produto p " +
                 " where exists " +
