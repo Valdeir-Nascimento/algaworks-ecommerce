@@ -19,6 +19,15 @@ public class OperacocoesEmLoteTest extends EntityManagerTest {
     private final int LIMITE_INSERCOES = 4;
 
     @Test
+    public void removerEmLote() {
+        entityManager.getTransaction().begin();
+        String jpql = "delete from Produto p where p.id between 8 and 12";
+        Query query = entityManager.createQuery(jpql);
+        query.executeUpdate();
+        entityManager.getTransaction().commit();
+    }
+
+    @Test
     public void atualizarEmLote() {
         entityManager.getTransaction().begin();
         String jpql = "update Produto p set p.preco = p.preco + (p.preco * 0.1) " +
