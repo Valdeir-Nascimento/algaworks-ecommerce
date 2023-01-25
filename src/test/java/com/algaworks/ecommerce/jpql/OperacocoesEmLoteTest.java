@@ -5,6 +5,7 @@ import com.algaworks.ecommerce.model.Produto;
 
 import org.junit.Test;
 
+import javax.persistence.Query;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,6 +17,18 @@ import java.util.stream.Collectors;
 public class OperacocoesEmLoteTest extends EntityManagerTest {
 
     private final int LIMITE_INSERCOES = 4;
+
+    @Test
+    public void atualizarEmLote() {
+        entityManager.getTransaction().begin();
+        String jpql = "update Produto p set p.preco = p.preco + (p.preco * 0.1) " +
+                " where exists (select 1 from p.categorias c2 where c2.id = :categoria)";
+        Query query = entityManager.createQuery(jpql);
+        query.setParameter("categoria", 2);
+        query.executeUpdate();
+
+        entityManager.getTransaction().commit();
+    }
 
     @Test
     public void inserirEmLote() throws IOException {
