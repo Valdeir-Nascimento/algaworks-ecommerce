@@ -9,53 +9,55 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+
 @Getter
 @Setter
-@EntityListeners({ GenericoListener.class })
 @Entity
+@NamedQuery(name = "Produto.listar", query = "select p from Produto p")
+@EntityListeners({GenericoListener.class})
 @Table(name = "produto",
-		uniqueConstraints = { @UniqueConstraint(name = "unq_nome", columnNames = { "nome" }) },
-		indexes = { @Index(name = "idx_nome", columnList = "nome") })
+        uniqueConstraints = {@UniqueConstraint(name = "unq_nome", columnNames = {"nome"})},
+        indexes = {@Index(name = "idx_nome", columnList = "nome")})
 public class Produto extends EntidadeBaseInteger {
 
-	@Column(name = "data_criacao", updatable = false, nullable = false)
-	private LocalDateTime dataCriacao;
+    @Column(name = "data_criacao", updatable = false, nullable = false)
+    private LocalDateTime dataCriacao;
 
-	@Column(name = "data_ultima_atualizacao", insertable = false)
-	private LocalDateTime dataUltimaAtualizacao;
+    @Column(name = "data_ultima_atualizacao", insertable = false)
+    private LocalDateTime dataUltimaAtualizacao;
 
-	@Column(length = 100, nullable = false)
-	private String nome;
+    @Column(length = 100, nullable = false)
+    private String nome;
 
-	@Lob
-	private String descricao;
+    @Lob
+    private String descricao;
 
-	private BigDecimal preco;
+    private BigDecimal preco;
 
-	@Lob
-	private byte[] foto;
+    @Lob
+    private byte[] foto;
 
-	@ManyToMany
-	@JoinTable(name = "produto_categoria",
-			joinColumns = @JoinColumn(name = "produto_id", nullable = false,
-					foreignKey = @ForeignKey(name = "fk_produto_categoria_produto")),
-			inverseJoinColumns = @JoinColumn(name = "categoria_id", nullable = false,
-					foreignKey = @ForeignKey(name = "fk_produto_categoria_categoria")))
-	private List<Categoria> categorias;
+    @ManyToMany
+    @JoinTable(name = "produto_categoria",
+            joinColumns = @JoinColumn(name = "produto_id", nullable = false,
+                    foreignKey = @ForeignKey(name = "fk_produto_categoria_produto")),
+            inverseJoinColumns = @JoinColumn(name = "categoria_id", nullable = false,
+                    foreignKey = @ForeignKey(name = "fk_produto_categoria_categoria")))
+    private List<Categoria> categorias;
 
-	@OneToOne(mappedBy = "produto")
-	private Estoque estoque;
+    @OneToOne(mappedBy = "produto")
+    private Estoque estoque;
 
-	@ElementCollection
-	@CollectionTable(name = "produto_tag",
-			joinColumns = @JoinColumn(name = "produto_id", nullable = false,
-					foreignKey = @ForeignKey(name = "fk_produto_tag_produto")))
-	@Column(name = "tag", length = 50, nullable = false)
-	private List<String> tags;
+    @ElementCollection
+    @CollectionTable(name = "produto_tag",
+            joinColumns = @JoinColumn(name = "produto_id", nullable = false,
+                    foreignKey = @ForeignKey(name = "fk_produto_tag_produto")))
+    @Column(name = "tag", length = 50, nullable = false)
+    private List<String> tags;
 
-	@ElementCollection
-	@CollectionTable(name = "produto_atributo",
-			joinColumns = @JoinColumn(name = "produto_id", nullable = false,
-					foreignKey = @ForeignKey(name = "fk_produto_atributo_produto")))
-	private List<Atributo> atributos;
+    @ElementCollection
+    @CollectionTable(name = "produto_atributo",
+            joinColumns = @JoinColumn(name = "produto_id", nullable = false,
+                    foreignKey = @ForeignKey(name = "fk_produto_atributo_produto")))
+    private List<Atributo> atributos;
 }
