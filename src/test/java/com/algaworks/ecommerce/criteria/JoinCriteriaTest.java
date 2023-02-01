@@ -10,9 +10,27 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class JoinCriteriaTest extends EntityManagerTest {
+
+    @Test
+    public void usarJoinFetch() {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Pedido> criteriaQuery = criteriaBuilder.createQuery(Pedido.class);
+        Root<Pedido> root = criteriaQuery.from(Pedido.class);
+        root.fetch("itens");
+        root.fetch("notaFiscal", JoinType.LEFT);
+        root.fetch("pagamento", JoinType.LEFT);
+
+        criteriaQuery.select(root);
+
+        criteriaQuery.where(criteriaBuilder.equal(root.get("id"), 1));
+        TypedQuery<Pedido> typedQuery = entityManager.createQuery(criteriaQuery);
+        Pedido pedido = typedQuery.getSingleResult();
+        assertNotNull(pedido);
+        assertFalse(pedido.getItens().isEmpty());
+    }
 
     @Test
     public void fazerLeftOuterJoin() {
