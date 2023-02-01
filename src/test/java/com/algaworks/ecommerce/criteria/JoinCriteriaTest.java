@@ -7,15 +7,28 @@ import com.algaworks.ecommerce.model.StatusPagamento;
 import org.junit.Test;
 
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
 public class JoinCriteriaTest extends EntityManagerTest {
+
+    @Test
+    public void fazerLeftOuterJoin() {
+        //select p from Pedido p left join p.pagamento pag on pag.status = 'PROCESSANDO'
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Pedido> criteriaQuery = criteriaBuilder.createQuery(Pedido.class);
+        Root<Pedido> root = criteriaQuery.from(Pedido.class);
+
+        Join<Pedido, Pagamento> joinPagamento = root.join("pagamento", JoinType.LEFT);
+        joinPagamento.on(criteriaBuilder.equal(joinPagamento.get("status"), StatusPagamento.PROCESSANDO));
+
+        criteriaQuery.select(root);
+        TypedQuery<Pedido> typedQuery = entityManager.createQuery(criteriaQuery);
+        List<Pedido> lista = typedQuery.getResultList();
+        assertEquals(lista.size(), 5);
+    }
 
 
     @Test
@@ -28,7 +41,6 @@ public class JoinCriteriaTest extends EntityManagerTest {
         joinPagamento.on(criteriaBuilder.equal(joinPagamento.get("status"), StatusPagamento.PROCESSANDO));
 
         criteriaQuery.select(root);
-
         TypedQuery<Pedido> typedQuery = entityManager.createQuery(criteriaQuery);
         List<Pedido> lista = typedQuery.getResultList();
         assertEquals(lista.size(), 2);
