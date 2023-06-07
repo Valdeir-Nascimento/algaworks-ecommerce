@@ -15,6 +15,11 @@ import static org.junit.Assert.*;
 public class JoinCriteriaTest extends EntityManagerTest {
 
     @Test
+    public void buscarPedidosComProdutoEspecifico() {
+        //select p from Pedido p join p.itens i where i.id.produtoId = 1
+    }
+
+    @Test
     public void usarJoinFetch() {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Pedido> criteriaQuery = criteriaBuilder.createQuery(Pedido.class);
