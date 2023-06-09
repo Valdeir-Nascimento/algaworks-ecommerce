@@ -3,6 +3,8 @@ package com.algaworks.ecommerce.criteria;
 import com.algaworks.ecommerce.EntityManagerTest;
 import com.algaworks.ecommerce.model.Cliente;
 import com.algaworks.ecommerce.model.Cliente_;
+import com.algaworks.ecommerce.model.Produto;
+import com.algaworks.ecommerce.model.Produto_;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -13,6 +15,37 @@ import javax.persistence.criteria.Root;
 
 public class ExpressoesCondicionaisCriteriaTest extends EntityManagerTest {
 
+
+    @Test
+    public void usarIsEmpty() {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Produto> criteriaQuery = criteriaBuilder.createQuery(Produto.class);
+        Root<Produto> root = criteriaQuery.from(Produto.class);
+
+        criteriaQuery.select(root);
+        criteriaQuery.where(criteriaBuilder.isEmpty(root.get(Produto_.categorias)));
+
+        TypedQuery<Produto> typedQuery = entityManager.createQuery(criteriaQuery);
+        var lista = typedQuery.getResultList();
+        Assert.assertNotNull(lista);
+    }
+
+    @Test
+    public void usarIsNull() {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Produto> criteriaQuery = criteriaBuilder.createQuery(Produto.class);
+        Root<Produto> root = criteriaQuery.from(Produto.class);
+
+        criteriaQuery.select(root);
+
+        criteriaQuery.where(criteriaBuilder.isNull(root.get(Produto_.foto)));
+//        criteriaQuery.where(root.get(Produto_.foto).isNotNull());
+
+        TypedQuery<Produto> typedQuery = entityManager.createQuery(criteriaQuery);
+        var lista = typedQuery.getResultList();
+        Assert.assertFalse(lista.isEmpty());
+    }
+
     @Test
     public void usarExpressaoCondicionalLike() {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
@@ -21,12 +54,11 @@ public class ExpressoesCondicionaisCriteriaTest extends EntityManagerTest {
 
         criteriaQuery.select(root);
         criteriaQuery.where(
-            criteriaBuilder.like(root.get(Cliente_.nome), "%a%")
+                criteriaBuilder.like(root.get(Cliente_.nome), "%a%")
         );
 
         TypedQuery<Cliente> typedQuery = entityManager.createQuery(criteriaQuery);
         var lista = typedQuery.getResultList();
         Assert.assertFalse(lista.isEmpty());
     }
-
 }
