@@ -15,6 +15,24 @@ import java.util.List;
 
 public class ExpressoesCondicionaisCriteriaTest extends EntityManagerTest {
 
+    @Test
+    public void usarOperadores() {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Pedido> criteriaQuery = criteriaBuilder.createQuery(Pedido.class);
+        Root<Pedido> root = criteriaQuery.from(Pedido.class);
+        criteriaQuery.select(root);
+        // select p from Pedido p where (status = 'PAGO' or status = 'AGUARDANDO') and total > 499
+        criteriaQuery.where(
+            criteriaBuilder.or(
+                criteriaBuilder.equal(root.get(Pedido_.status), StatusPedido.AGUARDANDO),
+                criteriaBuilder.equal(root.get(Pedido_.status), StatusPedido.PAGO)
+            ),
+            criteriaBuilder.greaterThan(root.get(Pedido_.total), new BigDecimal(499))
+        );
+        TypedQuery<Pedido> typedQuery = entityManager.createQuery(criteriaQuery);
+        List<Pedido> lista = typedQuery.getResultList();
+        Assert.assertFalse(lista.isEmpty());
+    }
 
     @Test
     public void usarExpressaoDiferente() {
