@@ -15,6 +15,28 @@ import java.util.List;
 public class FuncoesCriteriaTest extends EntityManagerTest {
 
     @Test
+    public void aplicarFuncaoNumero() {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Object[]> criteriaQuery = criteriaBuilder.createQuery(Object[].class);
+        Root<Pedido> root = criteriaQuery.from(Pedido.class);
+        criteriaQuery.multiselect(
+                root.get(Pedido_.id),
+                criteriaBuilder.abs(criteriaBuilder.prod(root.get(Pedido_.id), -1)),
+                criteriaBuilder.mod(root.get(Pedido_.id), 2),
+                criteriaBuilder.sqrt(root.get(Pedido_.id))
+        );
+        TypedQuery<Object[]> typedQuery = entityManager.createQuery(criteriaQuery);
+        List<Object[]> lista = typedQuery.getResultList();
+        Assert.assertFalse(lista.isEmpty());
+        lista.forEach(arr -> System.out.println(
+                arr[0] + "/n"
+                        + "abs: " + arr[1] + "/n"
+                        + "mod: " + arr[2] + "/n"
+                        + "sqrt: " + arr[3] + "/n"
+        ));
+    }
+
+    @Test
     public void aplicarFuncaoData() {
         // current_date, current_time, current_timestamp
 
@@ -59,14 +81,14 @@ public class FuncoesCriteriaTest extends EntityManagerTest {
         Root<Cliente> root = criteriaQuery.from(Cliente.class);
 
         criteriaQuery.multiselect(
-            root.get(Cliente_.nome),
-            criteriaBuilder.concat("Nome do cliente: ", root.get(Cliente_.nome)),
-            criteriaBuilder.length(root.get(Cliente_.nome)),
-            criteriaBuilder.locate(root.get(Cliente_.nome), "a"),
-            criteriaBuilder.substring(root.get(Cliente_.nome), 1, 2),
-            criteriaBuilder.lower(root.get(Cliente_.nome)),
-            criteriaBuilder.upper(root.get(Cliente_.nome)),
-            criteriaBuilder.trim(root.get(Cliente_.nome))
+                root.get(Cliente_.nome),
+                criteriaBuilder.concat("Nome do cliente: ", root.get(Cliente_.nome)),
+                criteriaBuilder.length(root.get(Cliente_.nome)),
+                criteriaBuilder.locate(root.get(Cliente_.nome), "a"),
+                criteriaBuilder.substring(root.get(Cliente_.nome), 1, 2),
+                criteriaBuilder.lower(root.get(Cliente_.nome)),
+                criteriaBuilder.upper(root.get(Cliente_.nome)),
+                criteriaBuilder.trim(root.get(Cliente_.nome))
         );
 
         TypedQuery<Object[]> typedQuery = entityManager.createQuery(criteriaQuery);
@@ -74,14 +96,14 @@ public class FuncoesCriteriaTest extends EntityManagerTest {
         Assert.assertFalse(lista.isEmpty());
 
         lista.forEach(arr -> System.out.println(
-            arr[0] + "\n"
-                + ", concat: " + arr[1] + "\n"
-                + ", length: " + arr[2] + "\n"
-                + ", locate: " + arr[3] + "\n"
-                + ", substring: " + arr[4] + "\n"
-                + ", lower: " + arr[5] + "\n"
-                + ", upper: " + arr[6] + "\n"
-                + ", trim: " + arr[7] + "\n"
+                arr[0] + "\n"
+                        + ", concat: " + arr[1] + "\n"
+                        + ", length: " + arr[2] + "\n"
+                        + ", locate: " + arr[3] + "\n"
+                        + ", substring: " + arr[4] + "\n"
+                        + ", lower: " + arr[5] + "\n"
+                        + ", upper: " + arr[6] + "\n"
+                        + ", trim: " + arr[7] + "\n"
         ));
 
     }
