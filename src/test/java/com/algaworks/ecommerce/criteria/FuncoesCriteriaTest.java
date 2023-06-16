@@ -14,6 +14,28 @@ import java.util.List;
 
 public class FuncoesCriteriaTest extends EntityManagerTest {
 
+    @Test
+    public void aplicarFuncaoAgregacao() {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Object[]> criteriaQuery = criteriaBuilder.createQuery(Object[].class);
+        Root<Pedido> root = criteriaQuery.from(Pedido.class);
+        criteriaQuery.multiselect(
+                criteriaBuilder.count(root.get(Pedido_.id)),
+                criteriaBuilder.avg(root.get(Pedido_.total)),
+                criteriaBuilder.sum(root.get(Pedido_.total))
+        );
+
+        TypedQuery<Object[]> typedQuery = entityManager.createQuery(criteriaQuery);
+        List<Object[]> lista = typedQuery.getResultList();
+        Assert.assertFalse(lista.isEmpty());
+        lista.forEach(arr -> System.out.println(
+                "count: " + arr[0] + "/n"
+                        + "avg: " + arr[1] + "/n"
+                        + "sum: " + arr[2] + "/n"
+
+        ));
+
+    }
 
     @Test
     public void aplicarFuncaoNativa() {
@@ -26,13 +48,13 @@ public class FuncoesCriteriaTest extends EntityManagerTest {
         );
 
         criteriaQuery.where(
-            criteriaBuilder.isTrue(
-                criteriaBuilder.function(
-                    "acima_media_faturamento",
-                    Boolean.class,
-                    root.get(Pedido_.total)
+                criteriaBuilder.isTrue(
+                        criteriaBuilder.function(
+                                "acima_media_faturamento",
+                                Boolean.class,
+                                root.get(Pedido_.total)
+                        )
                 )
-            )
         );
 
         TypedQuery<Object[]> typedQuery = entityManager.createQuery(criteriaQuery);
