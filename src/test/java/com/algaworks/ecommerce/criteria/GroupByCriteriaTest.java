@@ -7,8 +7,31 @@ import org.junit.Test;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import java.util.List;
+import java.util.Objects;
 
 public class GroupByCriteriaTest extends EntityManagerTest {
+
+    @Test
+    public void agruparResultado03Exercicio() {
+//        Total de vendas por cliente
+//        String jpql = "select c.nome, sum(ip.precoProduto) from ItemPedido ip " +
+//                " join ip.pedido p join p.cliente c " +
+//                " group by c.id";
+
+        CriteriaBuilder criteriaBuilder = entityManagerFactory.getCriteriaBuilder();
+        CriteriaQuery<Object[]> criteriaQuery = criteriaBuilder.createQuery(Object[].class);
+        Root<ItemPedido> root = criteriaQuery.from(ItemPedido.class);
+        Join<ItemPedido, Pedido> pedidoJoin = root.join(ItemPedido_.pedido);
+        Join<Pedido, Cliente> pedidoClienteJoin = pedidoJoin.join(Pedido_.cliente);
+        criteriaQuery.multiselect(
+            pedidoClienteJoin.get(Cliente_.nome),
+            criteriaBuilder.sum(root.get(ItemPedido_.precoProduto))
+        );
+        criteriaQuery.groupBy(pedidoClienteJoin.get(Cliente_.id));
+        TypedQuery<Object[]> typedQuery = entityManager.createQuery(criteriaQuery);
+        List<Object[]> lista = typedQuery.getResultList();
+        lista.forEach(arr -> System.out.println("Nome cliente: " + arr[0] + ", Sum: " + arr[1]));
+    }
 
     @Test
     public void agruparResultado02() {
