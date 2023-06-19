@@ -7,9 +7,45 @@ import org.junit.Test;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import java.util.List;
-import java.util.Objects;
 
 public class GroupByCriteriaTest extends EntityManagerTest {
+
+    @Test
+    public void agruparResultadoComFuncoes() {
+//         Total de vendas por mês.
+//        String jpql = "select concat(year(p.dataCriacao), '/', function('monthname', p.dataCriacao)), sum(p.total) " +
+//                " from Pedido p " +
+//                " group by year(p.dataCriacao), month(p.dataCriacao) ";
+
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Object[]> criteriaQuery = criteriaBuilder.createQuery(Object[].class);
+        Root<Pedido> root = criteriaQuery.from(Pedido.class);
+
+        Expression<Integer> anoCriacaoPedido = criteriaBuilder
+                .function("year", Integer.class, root.get(Pedido_.dataCriacao));
+        Expression<Integer> mesCriacaoPedido = criteriaBuilder
+                .function("month", Integer.class, root.get(Pedido_.dataCriacao));
+        Expression<String> nomeMesCriacaoPedido = criteriaBuilder
+                .function("monthname", String.class, root.get(Pedido_.dataCriacao));
+
+        Expression<String> anoMesConcat = criteriaBuilder.concat(
+                criteriaBuilder.concat(anoCriacaoPedido.as(String.class), "/"),
+                nomeMesCriacaoPedido
+        );
+
+        criteriaQuery.multiselect(
+                anoMesConcat,
+                criteriaBuilder.sum(root.get(Pedido_.total))
+        );
+
+        criteriaQuery.groupBy(anoCriacaoPedido, mesCriacaoPedido);
+
+        TypedQuery<Object[]> typedQuery = entityManager.createQuery(criteriaQuery);
+        List<Object[]> lista = typedQuery.getResultList();
+
+        lista.forEach(arr -> System.out.println("Ano/Mês: " + arr[0] + ", Sum: " + arr[1]));
+    }
+
 
     @Test
     public void agruparResultado03Exercicio() {
@@ -24,8 +60,8 @@ public class GroupByCriteriaTest extends EntityManagerTest {
         Join<ItemPedido, Pedido> pedidoJoin = root.join(ItemPedido_.pedido);
         Join<Pedido, Cliente> pedidoClienteJoin = pedidoJoin.join(Pedido_.cliente);
         criteriaQuery.multiselect(
-            pedidoClienteJoin.get(Cliente_.nome),
-            criteriaBuilder.sum(root.get(ItemPedido_.precoProduto))
+                pedidoClienteJoin.get(Cliente_.nome),
+                criteriaBuilder.sum(root.get(ItemPedido_.precoProduto))
         );
         criteriaQuery.groupBy(pedidoClienteJoin.get(Cliente_.id));
         TypedQuery<Object[]> typedQuery = entityManager.createQuery(criteriaQuery);
@@ -44,12 +80,12 @@ public class GroupByCriteriaTest extends EntityManagerTest {
         CriteriaQuery<Object[]> criteriaQuery = criteriaBuilder.createQuery(Object[].class);
         Root<ItemPedido> root = criteriaQuery.from(ItemPedido.class);
 
-        Join<ItemPedido, Produto>  itemPedidoProdutoJoin = root.join(ItemPedido_.produto);
+        Join<ItemPedido, Produto> itemPedidoProdutoJoin = root.join(ItemPedido_.produto);
         Join<Produto, Categoria> produtoCategoriaJoin = itemPedidoProdutoJoin.join(Produto_.categorias);
 
         criteriaQuery.multiselect(
-            produtoCategoriaJoin.get(Categoria_.nome),
-            criteriaBuilder.sum(root.get(ItemPedido_.precoProduto))
+                produtoCategoriaJoin.get(Categoria_.nome),
+                criteriaBuilder.sum(root.get(ItemPedido_.precoProduto))
         );
         criteriaQuery.groupBy(produtoCategoriaJoin.get(Categoria_.id));
         TypedQuery<Object[]> typedQuery = entityManager.createQuery(criteriaQuery);
@@ -68,9 +104,9 @@ public class GroupByCriteriaTest extends EntityManagerTest {
         Root<Categoria> root = criteriaQuery.from(Categoria.class);
         Join<Categoria, Produto> produtoJoin = root.join(Categoria_.produtos, JoinType.LEFT);
         criteriaQuery.multiselect(
-            root.get(Categoria_.nome),
-            criteriaBuilder.count(produtoJoin.get(Produto_.id)
-            )
+                root.get(Categoria_.nome),
+                criteriaBuilder.count(produtoJoin.get(Produto_.id)
+                )
         );
         criteriaQuery.groupBy(root.get(Categoria_.id));
         TypedQuery<Object[]> typedQuery = entityManager.createQuery(criteriaQuery);
